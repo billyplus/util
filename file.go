@@ -23,11 +23,8 @@ func WriteJSONToFile(file string, data interface{}) error {
 		return err
 	}
 
-	err = ioutil.WriteFile(file, d, 0664)
-	if err != nil {
-		return err
-	}
-	return nil
+	return ioutil.WriteFile(file, d, 0664)
+
 }
 
 //GetFileListByExt 根据文件后缀名获取文件列表

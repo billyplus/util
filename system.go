@@ -2,6 +2,7 @@ package util
 
 import (
 	"os"
+	"path/filepath"
 
 	"github.com/pkg/errors"
 )
@@ -26,6 +27,14 @@ func GetCurrentPath() (string, error) {
 		return "", err
 	}
 	return wd, nil
+}
+
+func GetFullPath(file string) (string, error) {
+	r, err := filepath.Abs(file)
+	if err != nil {
+		return "", errors.Wrap(err, "GetFullPath: ")
+	}
+	return r, nil
 }
 
 // CreateDirIfNotExist create dir is not exist, else do nothing
