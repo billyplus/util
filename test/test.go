@@ -1,4 +1,4 @@
-package testing
+package test
 
 import (
 	"runtime/debug"
@@ -6,9 +6,7 @@ import (
 )
 
 // T wrap testing.T for addtion function
-type T struct {
-	*testing.T
-}
+type T testing.T
 
 // Assert check the condition
 // if false then error out message
