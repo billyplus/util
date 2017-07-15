@@ -144,6 +144,8 @@ func lexAny(l *lexer) stateFn {
 		l.emit(TokRBrace)
 	case isAlphabet(r):
 		return lexIdent(l)
+	case isDigit(r):
+		return lexNumber(l)
 	case r == '=':
 		l.emit(TokAssign)
 	case r == '"':
@@ -162,7 +164,7 @@ func lexAny(l *lexer) stateFn {
 }
 
 // lexNumber scan a number. number can be a int or float
-func lexNumber(l *lexer) bool {
+func lexNumber(l *lexer) stateFn {
 Loop:
 	for {
 		switch r := l.next(); {
@@ -175,11 +177,11 @@ Loop:
 			break Loop
 		}
 	}
-	return true
+	return lexAny(l)
 }
 
 // lexFloat scan a float number, start from '.'
-func lexFloat(l *lexer) bool {
+func lexFloat(l *lexer) stateFn {
 Loop:
 	for {
 		switch r := l.next(); {
@@ -190,7 +192,7 @@ Loop:
 			break Loop
 		}
 	}
-	return true
+	return lexAny(l)
 }
 
 // lexIndet scan a identity
