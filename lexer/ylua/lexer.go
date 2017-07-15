@@ -56,7 +56,7 @@ func lex(name, input string) *lexer {
 		name:   name,
 		input:  input,
 		length: len(input),
-		tokens: make(chan Token, 3),
+		tokens: make(chan Token, 10),
 	}
 	go l.run()
 	return l
@@ -134,19 +134,7 @@ func lexInit(l *lexer) stateFn {
 
 //lexAny deal with patten
 func lexAny(l *lexer) stateFn {
-	// r := l.next()
-	// if r == eof {
-	// 	l.emit(TokEOF)
-	// 	return nil
 	// }
-
-	// for _, c := range runes {
-	// 	if r == c {
-	// 		fn := lexFnList[c]
-	// 		return fn(l)
-	// 	}
-	// }
-	// return l.errorf("无法匹配有效的格式。第%d行第%d列<%c>字符", l.line, l.start, r)
 	switch r := l.next(); {
 	case isSpace(r):
 		return lexSpace(l)
@@ -171,6 +159,38 @@ func lexAny(l *lexer) stateFn {
 		return nil
 	}
 	return lexAny(l)
+}
+
+// lexNumber scan a number. number can be a int or float
+func lexNumber(l *lexer) bool {
+Loop:
+	for {
+		switch r := l.next(); {
+		case isDigit(r):
+		case r == '.':
+			return lexFloat(l)
+		default:
+			l.backup()
+			l.emit(TokInt)
+			break Loop
+		}
+	}
+	return true
+}
+
+// lexFloat scan a float number, start from '.'
+func lexFloat(l *lexer) bool {
+Loop:
+	for {
+		switch r := l.next(); {
+		case isDigit(r):
+		default:
+			l.backup()
+			l.emit(TokFloat)
+			break Loop
+		}
+	}
+	return true
 }
 
 // lexIndet scan a identity

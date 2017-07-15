@@ -27,6 +27,17 @@ func WriteJSONToFile(file string, data interface{}) error {
 
 }
 
+//WritePrettyJSONToFile 写入配置文件
+func WritePrettyJSONToFile(file string, data interface{}) error {
+	d, err := json.MarshalIndent(data, "", "  ")
+	if err != nil {
+		return err
+	}
+
+	return ioutil.WriteFile(file, d, 0664)
+
+}
+
 //GetFileListByExt 根据文件后缀名获取文件列表
 func GetFileListByExt(path string, ext string) ([]string, error) {
 	var flist []string
