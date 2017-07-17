@@ -160,7 +160,7 @@ func lexAny(l *lexer) stateFn {
 		l.emit(TokEOF)
 		return nil
 	}
-	return lexAny(l)
+	return lexAny
 }
 
 // lexNumber scan a number. number can be a int or float
@@ -170,14 +170,14 @@ Loop:
 		switch r := l.next(); {
 		case isDigit(r):
 		case r == '.':
-			return lexFloat(l)
+			return lexFloat
 		default:
 			l.backup()
 			l.emit(TokInt)
 			break Loop
 		}
 	}
-	return lexAny(l)
+	return lexAny
 }
 
 // lexFloat scan a float number, start from '.'
@@ -192,7 +192,7 @@ Loop:
 			break Loop
 		}
 	}
-	return lexAny(l)
+	return lexAny
 }
 
 // lexIndet scan a identity
@@ -215,7 +215,7 @@ Loop:
 			break Loop
 		}
 	}
-	return lexAny(l)
+	return lexAny
 }
 
 // lexSingleQuote scans a single quoted string.
@@ -236,7 +236,7 @@ Loop:
 	}
 	l.emit(TokSingleQuot)
 
-	return lexAny(l)
+	return lexAny
 }
 
 // lexDoubleQuote scans a double quoted string.
@@ -257,7 +257,7 @@ Loop:
 	}
 	l.emit(TokDoubleQuot)
 
-	return lexAny(l)
+	return lexAny
 }
 
 // lexSpace scans a run of space characters.
@@ -271,7 +271,7 @@ func lexSpace(l *lexer) stateFn {
 	}
 	//l.emit(TokS)
 	l.ignore()
-	return lexAny(l)
+	return lexAny
 }
 
 // isSpace reports whether r is a space character.
