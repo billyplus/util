@@ -137,21 +137,21 @@ func lexAny(l *lexer) stateFn {
 	// }
 	switch r := l.next(); {
 	case isSpace(r):
-		return lexSpace(l)
+		return lexSpace
 	case r == '{':
 		l.emit(TokLBrace)
 	case r == '}':
 		l.emit(TokRBrace)
 	case isAlphabet(r):
-		return lexIdent(l)
+		return lexIdent
 	case isDigit(r):
-		return lexNumber(l)
+		return lexNumber
 	case r == '=':
 		l.emit(TokAssign)
 	case r == '"':
-		return lexDoubleQuote(l)
+		return lexDoubleQuote
 	case r == '\'':
-		return lexSingleQuote(l)
+		return lexSingleQuote
 	case r == '[':
 		l.emit(TokLBrack)
 	case r == ']':
