@@ -8,8 +8,7 @@ import (
 // T wrap testing.T for addtion function
 type T testing.T
 
-// Assert check the condition
-// if false then error out message
+// Assert check the condition if false then error out message
 func (t *T) Assert(ok bool, format string, args ...interface{}) {
 	if !ok {
 		t.Errorf(format, args...)

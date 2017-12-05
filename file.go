@@ -49,7 +49,7 @@ func GetFileListByExt(path string, ext string) ([]string, error) {
 			return nil
 		}
 		fname := f.Name()
-		if strings.HasSuffix(fname, ext) {
+		if ext == "" || strings.HasSuffix(fname, ext) {
 			flist = append(flist, path)
 		}
 		return nil
