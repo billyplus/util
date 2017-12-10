@@ -1,8 +1,10 @@
 package gracenet
 
 import (
+	"fmt"
 	"net"
 	"os"
+	"sync"
 	"syscall"
 )
 
@@ -17,6 +19,7 @@ type GraceTCPListener struct {
 	net.Listener
 	stop    chan error
 	stopped bool
+	wg      *sync.WaitGroup
 }
 
 func (gl *GraceTCPListener) Accept() (c net.Conn, err error) {
@@ -25,14 +28,16 @@ func (gl *GraceTCPListener) Accept() (c net.Conn, err error) {
 		return
 	}
 
-	c = GraceTCPConn{Conn: c}
+	c = GraceTCPConn{Conn: c, wg: gl.wg}
+	addCount += 1
+	fmt.Printf("add %v pid is: %v\n", addCount, os.Getpid())
 
-	httpWg.Add(1)
+	// gl.wg.Add(1)
 	return
 }
 
 func NewGraceTCPListener(l net.Listener) (gl *GraceTCPListener) {
-	gl = &GraceTCPListener{Listener: l, stop: make(chan error)}
+	gl = &GraceTCPListener{Listener: l, stop: make(chan error), wg: new(sync.WaitGroup)}
 	go func() {
 		_ = <-gl.stop
 		gl.stopped = true

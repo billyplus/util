@@ -1,14 +1,25 @@
 package gracenet
 
 import (
+	"fmt"
 	"net"
+	"os"
+	"sync"
+)
+
+var (
+	addCount = 0
+	mCount   = 0
 )
 
 type GraceTCPConn struct {
 	net.Conn
+	wg *sync.WaitGroup
 }
 
-func (w GraceTCPConn) Close() error {
-	httpWg.Done()
-	return w.Conn.Close()
+func (c GraceTCPConn) Close() error {
+	mCount += 1
+	fmt.Printf("close %v pid is: %v\n", mCount, os.Getpid())
+	// c.wg.Done()
+	return c.Conn.Close()
 }
