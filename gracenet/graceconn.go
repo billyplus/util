@@ -1,9 +1,7 @@
 package gracenet
 
 import (
-	"fmt"
 	"net"
-	"os"
 	"sync"
 )
 
@@ -19,7 +17,7 @@ type GraceTCPConn struct {
 
 func (c GraceTCPConn) Close() error {
 	mCount += 1
-	fmt.Printf("close %v pid is: %v\n", mCount, os.Getpid())
+	// fmt.Printf("close %v pid is: %v\n", mCount, os.Getpid())
 	// c.wg.Done()
 	return c.Conn.Close()
 }

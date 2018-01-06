@@ -1,7 +1,6 @@
 package gracenet
 
 import (
-	"fmt"
 	"net"
 	"os"
 	"sync"
@@ -30,7 +29,7 @@ func (gl *GraceTCPListener) Accept() (c net.Conn, err error) {
 
 	c = GraceTCPConn{Conn: c, wg: gl.wg}
 	addCount += 1
-	fmt.Printf("add %v pid is: %v\n", addCount, os.Getpid())
+	// fmt.Printf("add %v pid is: %v\n", addCount, os.Getpid())
 
 	// gl.wg.Add(1)
 	return
