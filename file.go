@@ -65,7 +65,7 @@ func GetFileListByExt(path string, ext string) (pathlist []string, err error) {
 // ReadDirByExt 根据文件后缀名返回某个目录下的全部文件名，不包括子目录
 func ReadDirByExt(path string, ext string) (filelist []string, err error) {
 	var files []os.FileInfo
-	files, err = ioutil.ReadDir(".")
+	files, err = ioutil.ReadDir(path)
 	if err != nil {
 		err = errors.Wrap(err, "ReadDirByExt")
 		return
