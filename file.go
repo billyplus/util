@@ -1,7 +1,9 @@
 package util
 
 import (
+	"bytes"
 	"encoding/json"
+	"io"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -77,4 +79,25 @@ func ReadDirByExt(path string, ext string) (filelist []string, err error) {
 		}
 	}
 	return
+}
+
+// LineCounter 从io.Reader里面读取，并返回总行数。
+// 根据wc的定义：A line is defined as a string of characters delimited by a <newline> character
+func LineCounts(r io.Reader) (int, error) {
+	buf := make([]byte, 32*1024)
+	count := 0
+	lineSep := []byte{'\n'}
+
+	for {
+		c, err := r.Read(buf)
+		count += bytes.Count(buf[:c], lineSep)
+
+		switch {
+		case err == io.EOF:
+			return count, nil
+
+		case err != nil:
+			return count, err
+		}
+	}
 }
